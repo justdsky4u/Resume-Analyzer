@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -21,10 +22,16 @@ from analytics import (
 
 app = FastAPI(title="AI Decision Intelligence - Backend")
 
+allowed_origins = os.getenv("ALLOWED_ORIGINS")
+if allowed_origins:
+    origins = [origin.strip() for origin in allowed_origins.split(",") if origin.strip()]
+else:
+    origins = ["http://127.0.0.1:5173", "http://localhost:5173", "*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:5173", "http://localhost:5173"],
-    allow_credentials=True,
+    allow_origins=origins,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )

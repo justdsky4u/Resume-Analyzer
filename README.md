@@ -73,6 +73,40 @@ Result payload additions:
 - `opportunities`: growth, optimization, and modeling signals.
 - `visualization_blueprint`: chart recommendations for line, bar, heatmap, and pie views.
 
+Deploying the backend to Render
+
+1) Create a new web service on Render and connect it to this GitHub repository.
+2) Use `app-backend/render.yaml` as the service definition.
+3) Set the Render build command to:
+
+```bash
+pip install -r requirements.txt
+```
+
+4) Set the Render start command to:
+
+```bash
+uvicorn app_back:app --host 0.0.0.0 --port $PORT
+```
+
+5) Optionally set `ALLOWED_ORIGINS` to your deployed frontend domain(s), for example:
+
+```bash
+https://your-frontend.vercel.app
+```
+
+6) If you need a quick open CORS policy, leave `ALLOWED_ORIGINS` unset and the backend will allow local dev plus all origins.
+
+Deploying the frontend to Vercel
+
+1) Connect Vercel to this GitHub repository.
+2) Use the existing `vercel.json` config in the repo.
+3) In Vercel project settings, add an environment variable:
+
+- `VITE_API_URL` = `https://your-backend.onrender.com`
+
+4) Deploy the frontend. The app will use `VITE_API_URL` in production and fall back to `http://127.0.0.1:8000` for local testing.
+
 Install backend extras (Windows):
 
 ```powershell
