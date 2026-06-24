@@ -1,0 +1,6 @@
+# Ignore backend and electron for frontend-only deployment
+app-backend/
+electron-app/
+node_modules/
+*.log
+dist/
